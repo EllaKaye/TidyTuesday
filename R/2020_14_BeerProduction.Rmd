@@ -1,0 +1,78 @@
+---
+title: "2020_14_BeerProduction"
+author: "Ella Kaye"
+date: "01/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Get Data
+
+```{r message=FALSE}
+library(tidyverse)
+library(usmap)
+#library(tmap)
+#library(spData)
+#library(ggrepel)
+#library(ggsflabel)
+```
+
+
+```{r get-data}
+# brewing_materials <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-31/brewing_materials.csv')
+# beer_taxed <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-31/beer_taxed.csv')
+# brewer_size <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-31/brewer_size.csv')
+beer_states <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-31/beer_states.csv')
+```
+
+```{r explore-data}
+pct_change_by_state <- beer_states %>%
+  filter(state != "total") %>%
+  group_by(state, year) %>%
+  summarise(total_barrels = sum(barrels)) %>%
+  filter(year %in% c(2014, 2019)) %>%
+  ungroup() %>%
+  pivot_wider(names_from = year, values_from = total_barrels) %>%
+  mutate(pct_change = (`2019`-`2014`)*100/`2014`) %>%
+  mutate(pct_change = round(pct_change)) %>%
+  arrange(desc(pct_change)) %>%
+  mutate(state = as_factor(state))
+
+pct_change_by_state
+```
+
+
+```{r eval = FALSE}
+ggplot(pct_change_by_state) +
+  geom_col(aes(y = fct_reorder(state, pct_change), x = pct_change))
+```
+
+
+```{r warning = FALSE}
+plot_usmap(data = pct_change_by_state, values = "pct_change") +
+  scale_fill_gradient2(label = scales::comma, name = "% change", high = "#99d594", low = "#fc8d59", breaks = c(-50, 0, 200, 400, 600)) +
+  labs(title = "Percentage change in beer production by state from 2014 to 2019",
+       caption = "Visualisation by Ella Kaye, Data from Alcohol and Tabacoo Tax and Trade Bureau") +
+  theme(legend.position = "right",
+        plot.title = element_text(size = 14,
+                                  face = "bold",
+                                  hjust = 0.5,
+                                  vjust = 0.5),
+        plot.caption = element_text(size = 8,
+                                  color = "grey70",
+                                  hjust = .5),
+        plot.caption.position = "plot") 
+
+ggsave("2020_14_BeerProduction.pdf")  
+```
+
+# What I learnt
+
+- plotting data on a map
+- `scale_fill_gradient2` for continuous divergent palettes 
+- adjusting breaks on a legend scale
+- playing with theme to add/adjust plot title and caption
+
