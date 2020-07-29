@@ -1,0 +1,42 @@
+---
+title: "Using `ggmap`"
+author: "Ella Kaye"
+date: "04/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(ggmap)
+library(tidyverse)
+```
+
+```{r}
+register_google(key = "AIzaSyD0qKeuuZUnl8gS7cjxJ92ZhfhuNB0qZEk")
+```
+
+
+Get Broadway dataset
+```{r}
+grosses <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/grosses.csv', guess_max = 40000)
+synopses <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/synopses.csv')
+cpi <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/cpi.csv')
+pre_1985_starts <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-28/pre-1985-starts.csv')
+
+```
+
+```{r}
+grosses %>%
+  distinct(theatre)
+```
+Use `ggmaps` to get geocode
+
+```{r}
+geocode("St. James Theatre, West 44th Street, New York, NY, USA")
+```
+

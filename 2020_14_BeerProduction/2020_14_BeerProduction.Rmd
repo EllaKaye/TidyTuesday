@@ -66,7 +66,6 @@ plot_usmap(data = pct_change_by_state, values = "pct_change") +
                                   hjust = .5),
         plot.caption.position = "plot") 
 
-ggsave("2020_14_BeerProduction.pdf")  
 ggsave("2020_14_BeerProduction.png")  
 ```
 
