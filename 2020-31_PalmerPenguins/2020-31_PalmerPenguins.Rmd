@@ -1,0 +1,59 @@
+---
+title: "Palmer Penguins"
+author: "Ella Kaye"
+date: "29/07/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(ragg)
+library(ggtext)
+```
+
+```{r palmerpenguin-font-plot}
+file <- knitr::fig_path('palmerpenguin-font-plot.png', number = NULL)
+
+p <- ggplot(penguins, aes(flipper_length_mm, body_mass_g, group = species)) +
+  geom_point(aes(colour = species, shape = species), alpha = 0.7) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(title = "Penguin Size, Palmer Station LTER",
+       subtitle = "Flipper length and body mass for <span style = 'color:darkorange;'>Adelie</span>, <span style = 'color:purple;'>Chinstrap</span> and <span style = 'color:cyan4;'>Gentoo</span> Penguins",
+       caption = "Visualization: Ella Kaye, Data: Gorman, Williams & Fraser (2014) DOI: 10.1371/journal.pone.009008",
+       x = "flipper length (mm)",
+       y = "body mass (g)") +
+  theme_minimal() +  
+  theme(legend.position = 'none',
+        text = element_text(family = "Futura"),
+        plot.title = element_text(family = "Museo Slab", size = 16),
+        plot.subtitle = element_markdown(), # element_markdown from `ggtext` to parse the css in the subtitle
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 8, colour = "grey50"),
+        plot.caption.position = "plot")
+
+# use agg_png from `ragg` as device for high quality image and access to .otf fonts
+# res = 320 for retina quality
+ggsave(file, p, device = agg_png, res = 320, unit = "in", width = 6, height = 4)
+
+knitr::include_graphics(file)
+```
+
+```{r palmerpenguin-font-plot-pdf}
+file <- knitr::fig_path('palmerpenguin-font-plot.pdf', number = NULL)
+
+# This works
+ggsave(file, p, device = cairo_pdf, unit = "in", width = 6, height = 4)
+
+# Can't include a .pdf image in a html document 
+# Works fine if I knit to `pdf_document`
+# knitr::include_graphics(file)
+```
+
+
+
+
