@@ -38,7 +38,7 @@ p <- ggplot(penguins, aes(flipper_length_mm, body_mass_g, group = species)) +
 
 # use agg_png from `ragg` as device for high quality image and access to .otf fonts
 # res = 320 for retina quality
-ggsave(file, p, device = agg_png, res = 320, unit = "in", width = 6, height = 4)
+ggsave(file, p, device = agg_png, res = 320, unit = "in", width = 5, height = 3)
 
 knitr::include_graphics(file)
 ```
@@ -47,7 +47,7 @@ knitr::include_graphics(file)
 file <- knitr::fig_path('palmerpenguin-font-plot.pdf', number = NULL)
 
 # This works
-ggsave(file, p, device = cairo_pdf, unit = "in", width = 6, height = 4)
+ggsave(file, p, device = cairo_pdf, unit = "in", width = 5, height = 3)
 
 # Can't include a .pdf image in a html document 
 # Works fine if I knit to `pdf_document`
