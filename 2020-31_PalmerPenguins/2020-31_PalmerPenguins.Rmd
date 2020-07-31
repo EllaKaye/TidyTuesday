@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r}
@@ -15,6 +15,14 @@ library(palmerpenguins)
 library(ragg)
 library(ggtext)
 ```
+
+## Note on the fonts
+
+The plot uses Museo Slab for the title and Futura Light elsewhere. Both are 'user' fonts saved on my computer. Museo Slab is available for free [here](https://www.myfonts.com/fonts/exljbris/museo-slab/500/). I'm not sure where I originally bought Futura Light from. I only have the 'Light' family from Futura in Font Book, so when I specify `family = "Futura"` in the call to `theme`, then it automatically picks up that. If I had other versions of Futura as well, I suspect I would have had to specify that I wanted the 'Light' version somehow. Futura is a professional font that needs paying for. There are [lots](https://www.myfonts.com/search/Futura) of different versions. I'm not sure where I got it from originally, but Font Book tells me it's by bitstream, so I think it's this one [here](https://www.myfonts.com/fonts/bitstream/futura/pro-light-193053/).
+
+Figuring out how to get .otf fonts to work with `ggplot` was tricky. The `ragg` package is the answer. See [here](https://www.tidyverse.org/blog/2019/07/ragg-0-1-0/) and [here](https://www.tidyverse.org/blog/2020/05/updates-to-ragg-and-systemfonts/). I had trouble getting plot size, font size and resolution to work nicely together when using the `agg_png()` function (as in the example [here](https://www.tidyverse.org/blog/2019/07/ragg-0-1-0/#example)), but using `agg_png` as the `device` argument in `ggsave` sorted those issues.
+
+
 
 ```{r palmerpenguin-font-plot}
 file <- knitr::fig_path('palmerpenguin-font-plot.png', number = NULL)
@@ -29,8 +37,9 @@ p <- ggplot(penguins, aes(flipper_length_mm, body_mass_g, group = species)) +
        y = "body mass (g)") +
   theme_minimal() +  
   theme(legend.position = 'none',
-        text = element_text(family = "Futura"),
-        plot.title = element_text(family = "Museo Slab", size = 16),
+        text = element_text(family = "Futura"), 
+        # (I only have 'Light' )
+        plot.title = element_text(family = "Museo Slab", size = 16), 
         plot.subtitle = element_markdown(), # element_markdown from `ggtext` to parse the css in the subtitle
         plot.title.position = "plot",
         plot.caption = element_text(size = 8, colour = "grey50"),
