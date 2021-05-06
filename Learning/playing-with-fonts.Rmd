@@ -1,0 +1,235 @@
+---
+title: "Playing with fonts"
+author: "Ella Kaye"
+date: "29/07/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message = FALSE}
+library(tidyverse)
+library(ragg)
+library(palmerpenguins)
+library(systemfonts)
+```
+
+```{r all-fonts}
+all_fonts <- system_fonts()
+```
+
+```{r}
+head(all_fonts)
+
+all_fonts %>%
+  filter(str_detect(path, ".otf"))
+
+match_font("Museo")
+```
+
+```{r eval = FALSE}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Shree Devanagari 714", size = 20))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Shree Devanagari 714", size = 20))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Kohinoor Bangla", size = 20))
+```
+
+```{r eval = FALSE}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Daubmark", size = 50))
+```
+
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "FiraCode-Regular", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Fira Code", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Roboto Condensed", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Roboto Condensed", face = "bold", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Roboto Condensed", face = "italic", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "RobotoCondensed-Regular"))
+```
+
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Mulish", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Mulish", face = "italic", size = 12))
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Mulish-LightItalic", size = 12))
+```
+
+```{r}
+library(ragg)
+library(ggplot2)
+
+file <- knitr::fig_path('.png')
+
+agg_png(file, width = 700, height = 500, units = 'px')
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo", size = 50))
+invisible(dev.off())
+
+knitr::include_graphics(file)
+```
+
+# svg
+
+```{r}
+library(svglite)
+library(fontquiver)
+```
+
+```{r svg}
+file <- knitr::fig_path('.svg')
+
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "Museo"))
+
+ggsave(file, p, device = svglite, unit = "in", width = 6, height = 4)
+
+knitr::include_graphics(file)
+```
+
+Looks fine in when pressing spacebar on the file in Finder, and in the Rstudio preview of a knit, but the Museo replaced by default fonts when I open in Safari.
+
+## Lemon Milk
+
+```{r }
+file <- knitr::fig_path('.png')
+
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "LEMON MILK Pro"))
+
+ggsave(file, p, device = agg_png, unit = "in", res = 320, width = 6, height = 4)
+
+knitr::include_graphics(file)
+```
+
+```{r}
+ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") + 
+  theme(text = element_text(family = "LEMON MILK Pro"))
+```
+
+```{r}
+library(palmerpenguins)
+library(ggtext)
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, group = species)) +
+  geom_point(aes(colour = species, shape = species), alpha = 0.7) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(title = "Penguin Size, Palmer Station LTER",
+       subtitle = "Flipper length and body mass for <span style = 'color:darkorange'>Adelie</span>, <span style = 'color:purple;'>Chinstrap</span> and <span style = 'color:cyan4;'>Gentoo</span> Penguins",
+       caption = "Visualization: Ella Kaye, Data: Gorman, Williams & Fraser (2014) DOI: 10.1371/journal.pone.009008",
+       x = "flipper length (mm)",
+       y = "body mass (g)") +
+  theme_minimal() +  
+  theme(legend.position = 'none',
+        text = element_text(family = "LEMON MILK Pro UltraLight"), 
+        plot.title = element_text(family = "LEMON MILK Pro Medium", face = "plain", size = 16), 
+        plot.subtitle = element_markdown(), # element_markdown from `ggtext` to parse the css in the subtitle
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 8, colour = "grey50"),
+        plot.caption.position = "plot")
+```
+
+It does not work to use markdown/html for bold if font family specified. *Depends on the font family. For 'Times' it's OK. For LEMON MILK Pro, it's not.*
+
+Using `ggtext` with standard font - the bold does work.
+```{r}
+library(palmerpenguins)
+library(ggtext)
+ggplot(penguins, aes(flipper_length_mm, body_mass_g, group = species)) +
+  geom_point(aes(colour = species, shape = species), alpha = 0.7) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(title = "Penguin Size, Palmer Station LTER",
+       subtitle = "Flipper length and body mass for <span style = 'color:darkorange;'>**Adelie**</span>, <span style = 'color:purple;'>**Chinstrap**</span> and <span style = 'color:cyan4;'>**Gentoo**</span> Penguins",
+       caption = "Visualization: Ella Kaye, Data: Gorman, Williams & Fraser (2014) DOI: 10.1371/journal.pone.009008",
+       x = "flipper length (mm)",
+       y = "body mass (g)") +
+  theme_minimal() +  
+  theme(legend.position = 'none',
+        #text = element_text(family = "LEMON MILK Pro UltraLight"), 
+        #plot.title = element_text(family = "LEMON MILK Pro Medium", size = 16), 
+        plot.subtitle = element_markdown(), # element_markdown from `ggtext` to parse the css in the subtitle
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 8, colour = "grey50"),
+        plot.caption.position = "plot")
+```

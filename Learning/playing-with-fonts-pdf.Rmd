@@ -1,0 +1,40 @@
+---
+title: "Playing with fonts PDF"
+author: "Ella Kaye"
+date: "31/07/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(svglite)
+library(ragg)
+```
+
+```{r}
+p <- ggplot(diamonds) + 
+  geom_bar(aes(color, fill = color)) + 
+  ggtitle("A fancy font") 
+```
+
+```{r}
+file_pdf <- knitr::fig_path('font-experiment.pdf', number = NULL)
+
+pp <- p + theme(text = element_text(family = "Museo"))
+
+ggsave(pp, file = "font-experiment2.pdf", type = "cairo", dpi = 300)
+
+knitr::include_graphics("font-experiment2.pdf")
+```
+
+```{r eval = FALSE}
+file_svg <- knitr::fig_path('font-experiment.svg', number = NULL)
+
+pp <- p + theme(text = element_text(family = "Museo"))
+
+ggsave(file_svg, pp, device = svglite, unit = "in", width = 6, height = 4)
+
+knitr::include_graphics(file_svg)
+```
